@@ -1,12 +1,12 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: 618大势新品赏
+name: ^京喜领88元红包
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 1,12 * 5,6 *'
+    - cron: '4 2 * * *'
   
   watch:
     types: started
@@ -38,7 +38,7 @@ jobs:
          
       - name: '运行'
         run: |
-          node adolf_newInteraction.js
+          node jd_jxlhb.js
          
           
         env:

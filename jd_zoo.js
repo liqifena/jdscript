@@ -88,7 +88,7 @@ if ($.isNode()) {
   }
   let res = [], res2 = [], res3 = [];
   res3 = await getAuthorShareCode('https://raw.githubusercontent.com/inoyna11/Write-files/master/shareCodes/jd_zoo.json');
-  if (!res3) await getAuthorShareCode('https://raw.githubusercontent.com/inoyna11/Write-files/master/shareCodes/jd_zoo.json')
+  if (!res3) await getAuthorShareCode('https://gitee.com/jay_chojfjfjf/share-codes/raw/master/jd_zoo.json')
   if (new Date().getUTCHours() + 8 >= 9) {
     res = await getAuthorShareCode() || [];
     res2 = await getAuthorShareCode('https://gitee.com/xr2021/share/raw/master/pk.json') || [];
@@ -207,7 +207,7 @@ async function zoo() {
             await $.wait(3000);
           }
         }
-      }else if ($.oneTask.taskType === 2 && $.oneTask.status === 1){
+      } else if ($.oneTask.taskType === 2 && $.oneTask.status === 1 && $.oneTask.scoreRuleVos[0].scoreRuleType === 2){
         console.log(`做任务：${$.oneTask.taskName};等待完成 (实际不会添加到购物车)`);
         $.taskId = $.oneTask.taskId;
         $.feedDetailInfo = {};
@@ -223,6 +223,25 @@ async function zoo() {
           await takePostRequest('add_car');
           await $.wait(1500);
           needTime --;
+        }
+      }else if ($.oneTask.taskType === 2 && $.oneTask.status === 1 && $.oneTask.scoreRuleVos[0].scoreRuleType === 0){
+        $.activityInfoList = $.oneTask.productInfoVos ;
+        for (let j = 0; j < $.activityInfoList.length; j++) {
+          $.oneActivityInfo = $.activityInfoList[j];
+          if ($.oneActivityInfo.status !== 1 || !$.oneActivityInfo.taskToken) {
+            continue;
+          }
+          $.callbackInfo = {};
+          console.log(`做任务：浏览${$.oneActivityInfo.skuName};等待完成`);
+          await takePostRequest('zoo_collectScore');
+          if ($.oneTask.taskType === 2) {
+            await $.wait(2000);
+            console.log(`任务完成`);
+          } else {
+            console.log($.callbackInfo);
+            console.log(`任务失败`);
+            await $.wait(3000);
+          }
         }
       }
     }
